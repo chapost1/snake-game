@@ -130,6 +130,7 @@ class GameBoard extends EventEmitter {
 	board = GameBoard.defaultBoard;
 	direction = null;
 	paused = true;
+	canChangeDirection = true;
 	appleLocation = {
 		row: GameBoard.defaultEntitiesPositions.apple.Y,
 		column: GameBoard.defaultEntitiesPositions.apple.X
@@ -220,35 +221,38 @@ class GameBoard extends EventEmitter {
 	changeDirection(direction) {
 		let okay = false;
 
-		switch (direction) {
-			case Directions.UP: {
-				if (this.direction !== Directions.DOWN) {
-					okay = true;
+		if(this.canChangeDirection) {
+
+			switch (direction) {
+				case Directions.UP: {
+					if (this.direction !== Directions.DOWN) {
+						okay = true;
+					}
+					break;
 				}
-				break;
-			}
-			case Directions.DOWN: {
-				if (this.direction !== Directions.UP) {
-					okay = true;
+				case Directions.DOWN: {
+					if (this.direction !== Directions.UP) {
+						okay = true;
+					}
+					break;
 				}
-				break;
-			}
-			case Directions.LEFT: {
-				console.log(this.direction);
-				if (this.direction !== Directions.RIGHT) {
-					okay = true;
+				case Directions.LEFT: {
+					if (this.direction !== Directions.RIGHT) {
+						okay = true;
+					}
+					break;
 				}
-				break;
-			}
-			case Directions.RIGHT: {
-				if( this.direction !== Directions.LEFT) {
-					okay = true;
+				case Directions.RIGHT: {
+					if (this.direction !== Directions.LEFT) {
+						okay = true;
+					}
+					break;
 				}
-				break;
 			}
-		}
-		if(okay) {
-			this.direction = direction;
+			if (okay) {
+				this.canChangeDirection = false;
+				this.direction = direction;
+			}
 		}
 		return okay;
 	}
@@ -267,6 +271,7 @@ class GameBoard extends EventEmitter {
 
 	assignSnakeMovingForwardTask() {
 		if(this.snakeMovingNextTaskHolder) {
+			this.canChangeDirection = true;
 			clearTimeout(this.snakeMovingNextTaskHolder);
 		}
 		this.snakeMovingNextTaskHolder = setTimeout(
@@ -307,6 +312,7 @@ class GameBoard extends EventEmitter {
 
 			this.assignSnakeMovingForwardTask();
 		}
+		this.canChangeDirection = true;
 	}
 
 	updateEntitiesBoard() {
@@ -392,7 +398,6 @@ class GameBoard extends EventEmitter {
 					// free to go
 				}
 			}
-			console.log('im here');
 		}
 		return result;
 	}
