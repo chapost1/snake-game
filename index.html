@@ -1,0 +1,67 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/x-icon" href="img/snake-icon.svg">
+
+	<link rel="stylesheet" href="css/main.css">
+	<script src="./js/eventEmitter.js"></script>
+	<script src="./js/main.js"></script>
+
+</head>
+
+<body>
+
+<div id="game-main">
+
+	<div id="control-panel">
+		<div class="control-panel-item">
+			<h4 class="control-panel-item-inner" id="game-logo">Snake Game</h4>
+		</div>
+		<div class="control-panel-item">
+			<h4 class="control-panel-item-inner">Record:</h4>
+			<h4 class="control-panel-item-inner" id="control-panel-item-inner-record">0</h4>
+		</div>
+		<div class="control-panel-item">
+			<h4 class="control-panel-item-inner">Score:</h4>
+			<h4 class="control-panel-item-inner" id="control-panel-item-inner-score">0</h4>
+		</div>
+	</div>
+
+	<div id="board-wrapper">
+		<div id="game-board"></div>
+		<div id="game-board-with-entities"></div>
+		<div id="game-board-paused-layer" class="active">
+			<img src="./img/pause-icon.png"/>
+		</div>
+
+		<div id="dev-signature">
+			<h5>By Shahar Tal</h5>
+		</div>
+	</div>
+
+
+
+	<div id="game-over">
+		<h1>Game Over</h1>
+
+		<button onclick="game.toggleStatus();">New Game ↺</button>
+	</div>
+
+	<div id="game-backdrop-layer"></div>
+
+</div>
+
+
+
+<div id="spinner">
+	<img src="https://i.pinimg.com/originals/fa/87/77/fa87774590186b287a5338d7c87afc0c.gif" />
+</div>
+
+</body>
+
+</html>
