@@ -274,9 +274,20 @@ class GameBoard extends EventEmitter {
 			this.canChangeDirection = true;
 			clearTimeout(this.snakeMovingNextTaskHolder);
 		}
+
+		const minimumTimeoutValue = 100;
+		let downer = 3;
+		if(this.score >= 12) {
+			downer = 2
+		}
+		let timeOutValue = 200 - (this.score * downer);
+		if(timeOutValue < minimumTimeoutValue) {
+			timeOutValue = minimumTimeoutValue;
+		}
+
 		this.snakeMovingNextTaskHolder = setTimeout(
 			() => this.snakeMovingNextTask(),
-			200);
+			timeOutValue);
 	}
 
 	snakeMovingNextTask() {
