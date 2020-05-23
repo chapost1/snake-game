@@ -221,7 +221,7 @@ class GameBoard extends EventEmitter {
 	changeDirection(direction) {
 		let okay = false;
 
-		if(this.canChangeDirection) {
+		if(this.canChangeDirection && this.direction !== direction) {
 
 			switch (direction) {
 				case Directions.UP: {
