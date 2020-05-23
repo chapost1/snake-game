@@ -104,7 +104,6 @@ height: 200px;
 
 .board-square {
 display: inline-block;
-border: 1px solid darkgreen;
 width: 35px;
 height: 35px;
 background-color: #22222261;
@@ -119,7 +118,6 @@ height: 100%;
 
 .board-entity-square {
 	display: inline-block;
-	border: 1px solid transparent;
 	width: 35px;
 	height: 35px;
 	border-radius: 100%;
@@ -129,10 +127,11 @@ height: 100%;
 position: relative;
 }
 .snake {
-	background-color: #95b532;
+	/*background-color: #95b532;*/
+	background: linear-gradient(41deg, rgb(119, 146, 39) 12%, rgb(160, 196, 50) 100%);
 }
 .snake-head {
-	background-image: url("../img/snake-head-icon-2.svg");
+	background-image: url("../img/snake-head-icon.svg");
 	background-size: contain;
 	background-position: center;
 	z-index: 10;

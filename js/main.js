@@ -23,7 +23,7 @@ class SnakeGame {
 
 	constructor(direction, start = false) {
 		this.direction = direction || Directions.RIGHT;
-		this.resetGame();
+		this.resetGame(false);
 
 		if(start) {
 			this.isRunning = true;
@@ -59,10 +59,10 @@ class SnakeGame {
 
 			const gameOverPopup = document.getElementById("game-over");
 			const gameOverBackdrop = document.getElementById("game-backdrop-layer");
-			if(gameOverPopup) {
+			if (gameOverPopup) {
 				gameOverPopup.style.display = "block";
 			}
-			if(gameOverBackdrop) {
+			if (gameOverBackdrop) {
 				gameOverBackdrop.style.display = "block";
 			}
 		});
@@ -87,6 +87,9 @@ class SnakeGame {
 			const okay = this.gameBoard.changeDirection(direction);
 			if (okay) {
 				this.direction = direction;
+				if(this.gameBoard.canMove) {
+					this.gameBoard.fastMoveExecution();
+				}
 			}
 		}
 	}
@@ -129,8 +132,8 @@ class GameBoard extends EventEmitter {
 	score = 0;
 	board = GameBoard.defaultBoard;
 	direction = null;
-	paused = true;
 	canChangeDirection = true;
+	canMove = true;
 	appleLocation = {
 		row: GameBoard.defaultEntitiesPositions.apple.Y,
 		column: GameBoard.defaultEntitiesPositions.apple.X
@@ -139,6 +142,7 @@ class GameBoard extends EventEmitter {
 	snake = [];
 
 	snakeMovingNextTaskHolder = null;
+	fastMoveHolder = null;
 
 	constructor(direction = Directions.RIGHT) {
 		super();
@@ -221,7 +225,7 @@ class GameBoard extends EventEmitter {
 	changeDirection(direction) {
 		let okay = false;
 
-		if(this.canChangeDirection) {
+		if(this.canChangeDirection && this.direction !== direction) {
 
 			switch (direction) {
 				case Directions.UP: {
@@ -262,6 +266,7 @@ class GameBoard extends EventEmitter {
 			// paused
 			if(this.snakeMovingNextTaskHolder) {
 				clearTimeout(this.snakeMovingNextTaskHolder);
+				clearTimeout(this.fastMoveHolder);
 			}
 		} else {
 			// set task
@@ -272,7 +277,9 @@ class GameBoard extends EventEmitter {
 	assignSnakeMovingForwardTask() {
 		if(this.snakeMovingNextTaskHolder) {
 			this.canChangeDirection = true;
+			this.canMove = true;
 			clearTimeout(this.snakeMovingNextTaskHolder);
+			clearTimeout(this.fastMoveHolder);
 		}
 
 		const minimumTimeoutValue = 100;
@@ -288,6 +295,16 @@ class GameBoard extends EventEmitter {
 		this.snakeMovingNextTaskHolder = setTimeout(
 			() => this.snakeMovingNextTask(),
 			timeOutValue);
+
+		this.canMove = false;
+		this.fastMoveHolder = setTimeout(() => this.canMove = true, 30);
+	}
+
+	fastMoveExecution() {
+		clearTimeout(this.snakeMovingNextTaskHolder);
+		clearTimeout(this.fastMoveHolder);
+		this.canMove = false;
+		this.snakeMovingNextTask();
 	}
 
 	snakeMovingNextTask() {
